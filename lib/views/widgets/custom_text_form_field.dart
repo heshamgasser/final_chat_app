@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomTextFormField extends StatelessWidget {
   TextEditingController controller;
@@ -17,9 +16,10 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: textInputType,
+      textInputAction: TextInputAction.next,
       obscureText:
           textInputType == TextInputType.visiblePassword ? true : false,
-      style: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.white),
+      style: Theme.of(context).textTheme.labelMedium,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         border: OutlineInputBorder(
@@ -35,7 +35,7 @@ class CustomTextFormField extends StatelessWidget {
           borderSide: BorderSide(color: Colors.amberAccent),
         ),
         labelText: labelText,
-        labelStyle: GoogleFonts.poppins(fontSize: 16.sp, color: Colors.white),
+        labelStyle: Theme.of(context).textTheme.labelMedium,
       ),
     );
   }

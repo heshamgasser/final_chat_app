@@ -1,11 +1,12 @@
+import 'package:final_chat_app/shared/styles/app_theme.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
+import 'package:final_chat_app/views/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main (){
+void main() {
   runApp(ChatApp());
 }
-
 
 class ChatApp extends StatelessWidget {
   const ChatApp({super.key});
@@ -17,11 +18,13 @@ class ChatApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute:  LogIn.routeName,
+          initialRoute: LogIn.routeName,
           routes: {
-            LogIn.routeName:(context) => LogIn(),
+            LogIn.routeName: (context) => LogIn(),
+            SignUp.routeName: (context) => SignUp(),
           },
-
+          theme: AppTheme.lightTheme,
+          themeMode: ThemeMode.light,
         );
       },
     );
