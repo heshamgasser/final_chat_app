@@ -1,10 +1,17 @@
 import 'package:final_chat_app/shared/styles/app_theme.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
 import 'package:final_chat_app/views/sign_up_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(ChatApp());
 }
 

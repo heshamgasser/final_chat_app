@@ -1,5 +1,4 @@
-import 'package:final_chat_app/shared/styles/app_color.dart';
-import 'package:final_chat_app/shared/styles/app_text.dart';
+import 'package:final_chat_app/shared/network/fireBase_function.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
 import 'package:final_chat_app/views/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +100,7 @@ class SignUp extends StatelessWidget {
                   textInputType: TextInputType.visiblePassword),
               SizedBox(height: 10.h),
               CustomTextFormField(
-                  controller: passwordController,
+                  controller: confirmPasswordController,
                   labelText: 'Confirm Password',
                   textInputType: TextInputType.visiblePassword),
               SizedBox(height: 10.h),
@@ -109,7 +108,12 @@ class SignUp extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  FirebaseFunction.signUpFunction(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      context: context);
+                },
                 child: Text(
                   'Sign Up',
                   style: Theme.of(context).textTheme.bodyMedium,
