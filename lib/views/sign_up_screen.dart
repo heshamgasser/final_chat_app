@@ -1,5 +1,4 @@
-import 'package:final_chat_app/shared/styles/app_color.dart';
-import 'package:final_chat_app/shared/styles/app_text.dart';
+import 'package:final_chat_app/shared/network/fireBase_function.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
 import 'package:final_chat_app/views/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +12,7 @@ class SignUp extends StatelessWidget {
   TextEditingController fNameController = TextEditingController();
   TextEditingController lNameController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -24,123 +24,134 @@ class SignUp extends StatelessWidget {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                width: 150.w,
-                height: 150.h,
-                child: Image.asset(
-                  'assets/images/scholar.png',
+      body: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  width: 150.w,
+                  height: 150.h,
+                  child: Image.asset(
+                    'assets/images/scholar.png',
+                  ),
                 ),
-              ),
-              SizedBox(height: 5.h),
-              Center(
-                child: Text(
-                  'Scholar Chat',
-                  style: Theme.of(context).textTheme.titleLarge,
+                SizedBox(height: 5.h),
+                Center(
+                  child: Text(
+                    'Scholar Chat',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
-              ),
-              SizedBox(height: 10.h),
-              Text('Sign Up', style: Theme.of(context).textTheme.bodyLarge),
-              SizedBox(height: 10.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'First Name',
+                SizedBox(height: 10.h),
+                Text('Sign Up', style: Theme.of(context).textTheme.bodyLarge),
+                SizedBox(height: 10.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'First Name',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Text(
+                        'Last Name',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextFormField(
+                          controller: fNameController,
+                          labelText: 'First Name',
+                          textInputType: TextInputType.text),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: CustomTextFormField(
+                          controller: lNameController,
+                          labelText: 'Last Name',
+                          textInputType: TextInputType.text),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                CustomTextFormField(
+                    controller: emailController,
+                    labelText: 'Email',
+                    textInputType: TextInputType.emailAddress),
+                SizedBox(height: 10.h),
+                CustomTextFormField(
+                    controller: passwordController,
+                    labelText: 'Password',
+                    textInputType: TextInputType.visiblePassword),
+                SizedBox(height: 10.h),
+                CustomTextFormField(
+                    controller: confirmPasswordController,
+                    labelText: 'Confirm Password',
+                    textInputType: TextInputType.visiblePassword),
+                SizedBox(height: 10.h),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                  ),
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      FirebaseFunction.signUpFunction(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          context: context);
+                    }
+                  },
+                  child: Text(
+                    'Sign Up',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already Have an Account? ",
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
                           .copyWith(color: Colors.white),
                     ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: Text(
-                      'Last Name',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomTextFormField(
-                        controller: fNameController,
-                        labelText: 'First Name',
-                        textInputType: TextInputType.text),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: CustomTextFormField(
-                        controller: lNameController,
-                        labelText: 'Last Name',
-                        textInputType: TextInputType.text),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.h),
-              CustomTextFormField(
-                  controller: emailController,
-                  labelText: 'Email',
-                  textInputType: TextInputType.emailAddress),
-              SizedBox(height: 10.h),
-              CustomTextFormField(
-                  controller: passwordController,
-                  labelText: 'Password',
-                  textInputType: TextInputType.visiblePassword),
-              SizedBox(height: 10.h),
-              CustomTextFormField(
-                  controller: passwordController,
-                  labelText: 'Confirm Password',
-                  textInputType: TextInputType.visiblePassword),
-              SizedBox(height: 10.h),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                ),
-                onPressed: () {},
-                child: Text(
-                  'Sign Up',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              SizedBox(height: 10.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already Have an Account? ",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(color: Colors.white),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, LogIn.routeName);
-                    },
-                    child: Text(
-                      "Sign In",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(color: Colors.greenAccent),
-                    ),
-                  )
-                ],
-              )
-            ],
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, LogIn.routeName);
+                      },
+                      child: Text(
+                        "Sign In",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.greenAccent),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

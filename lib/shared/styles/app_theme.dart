@@ -6,6 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.backgrounColor,
+    snackBarTheme: SnackBarThemeData(
+      // backgroundColor: Colors.black54,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
+      ),
+    ),
     appBarTheme: AppBarTheme(
       color: Colors.transparent,
       elevation: 0,
