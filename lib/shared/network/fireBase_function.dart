@@ -1,52 +1,45 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class FirebaseFunction {
-  static signUpFunction(
-      {required String email,
-      required String password,
-      required BuildContext context}) async {
+  static void signUpFunction({
+    required String email,
+    required String password,
+    required Function emailCreated,
+    required Function weakPassword,
+    required Function emailExist,
+    required Function onError,
+  }) async {
     try {
       UserCredential user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Email Created Successfully',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ),
-      );
+      emailCreated();
     } on FirebaseAuthException catch (ex) {
       if (ex.code == 'weak-password') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'The Password Provided is Too Weak',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        );
+        weakPassword();
       } else if (ex.code == 'email-already-in-use') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'An Account with Email $email Already Exists.',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        );
+        emailExist();
       }
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            error.toString(),
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ),
-      );
+      onError();
+    }
+  }
+
+  static void signInFunction(
+      {required String email,
+      required String password,
+      required Function loginSuccess,
+      required Function loginException,
+      required Function onError}) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      loginSuccess();
+    } on FirebaseAuthException catch (ex) {
+      loginException();
+    } catch (error) {
+      onError(error.toString());
     }
   }
 }

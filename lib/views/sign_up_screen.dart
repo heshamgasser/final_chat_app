@@ -1,6 +1,7 @@
 import 'package:final_chat_app/shared/network/fireBase_function.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
 import 'package:final_chat_app/views/widgets/custom_text_form_field.dart';
+import 'package:final_chat_app/views/widgets/helper_snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -114,9 +115,30 @@ class SignUp extends StatelessWidget {
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
                       FirebaseFunction.signUpFunction(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          context: context);
+                        email: emailController.text,
+                        password: passwordController.text,
+                        emailCreated: () {
+                          helperSnackBar(
+                              context: context,
+                              message: 'Email Created Successfully');
+                        },
+                        emailExist: () {
+                          helperSnackBar(
+                              context: context,
+                              message:
+                                  'An Account with Email ${emailController.text} Already Exists.');
+                        },
+                        weakPassword: () {
+                          helperSnackBar(
+                              context: context,
+                              message: 'The Password Provided is Too Weak');
+                        },
+                        onError: () {
+                          helperSnackBar(
+                              context: context,
+                              message: 'Something Went Wrong');
+                        },
+                      );
                     }
                   },
                   child: Text(
