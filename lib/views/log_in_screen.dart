@@ -1,7 +1,10 @@
+import 'package:final_chat_app/shared/network/fireBase_function.dart';
 import 'package:final_chat_app/shared/styles/app_color.dart';
 import 'package:final_chat_app/shared/styles/app_text.dart';
+import 'package:final_chat_app/views/chat_screen.dart';
 import 'package:final_chat_app/views/sign_up_screen.dart';
 import 'package:final_chat_app/views/widgets/custom_text_form_field.dart';
+import 'package:final_chat_app/views/widgets/helper_snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -57,7 +60,32 @@ class LogIn extends StatelessWidget {
                     backgroundColor: Colors.white,
                   ),
                   onPressed: () {
-                    if (formKey.currentState!.validate()) {}
+                    if (formKey.currentState!.validate()) {
+                      FirebaseFunction.SignInFunction(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          userNotFound: () {
+                            helperSnackBar(
+                                context: context,
+                                message: 'No Matching Email Address Found');
+                          },
+                          wrongPassword: () {
+                            helperSnackBar(
+                                context: context,
+                                message:
+                                    'Your User Name or Password is Incorrect');
+                          },
+                          onError: () {
+                            helperSnackBar(
+                                context: context,
+                                message: 'Something Went Wrong');
+                          }
+                          // context: context,
+
+                          );
+                      // Navigator.pushReplacementNamed(
+                      //     context, ChatScreen.routeName);
+                    }
                   },
                   child: Text(
                     'Sign In',

@@ -1,4 +1,5 @@
 import 'package:final_chat_app/shared/styles/app_theme.dart';
+import 'package:final_chat_app/views/chat_screen.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
 import 'package:final_chat_app/views/sign_up_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,6 +30,7 @@ class ChatApp extends StatelessWidget {
           routes: {
             LogIn.routeName: (context) => LogIn(),
             SignUp.routeName: (context) => SignUp(),
+            ChatScreen.routeName: (context) => ChatScreen(),
           },
           theme: AppTheme.lightTheme,
           themeMode: ThemeMode.light,
