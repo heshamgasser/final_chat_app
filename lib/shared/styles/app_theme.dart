@@ -16,7 +16,8 @@ class AppTheme {
       ),
     ),
     appBarTheme: AppBarTheme(
-      color: Colors.transparent,
+      color: AppColors.backgrounColor,
+      centerTitle: true,
       elevation: 0,
       iconTheme: IconThemeData(size: 30.r, color: Colors.white),
     ),

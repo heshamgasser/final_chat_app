@@ -1,4 +1,5 @@
 import 'package:final_chat_app/shared/network/fireBase_function.dart';
+import 'package:final_chat_app/views/chat_screen.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
 import 'package:final_chat_app/views/widgets/custom_text_form_field.dart';
 import 'package:final_chat_app/views/widgets/helper_snackBar.dart';
@@ -121,6 +122,8 @@ class SignUp extends StatelessWidget {
                           helperSnackBar(
                               context: context,
                               message: 'Email Created Successfully');
+                          Navigator.pushReplacementNamed(
+                              context, ChatScreen.routeName);
                         },
                         emailExist: () {
                           helperSnackBar(
