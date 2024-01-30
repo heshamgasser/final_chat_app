@@ -4,13 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../shared/styles/app_color.dart';
 
 class ChatTextFormField extends StatelessWidget {
-  const ChatTextFormField({super.key});
+  Function sendMessage;
+  TextEditingController controller;
+
+  ChatTextFormField({required this.sendMessage, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: TextFormField(
+        controller: controller,
         style: Theme.of(context)
             .textTheme
             .labelMedium!
@@ -38,7 +42,9 @@ class ChatTextFormField extends StatelessWidget {
               borderSide: BorderSide(color: Colors.black),
             ),
             suffixIcon: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                sendMessage();
+              },
               icon: Icon(
                 Icons.send,
                 size: 30.r,

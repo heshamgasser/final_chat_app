@@ -1,8 +1,11 @@
+import 'package:final_chat_app/models/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({super.key});
+  MessageModel message;
+
+  ChatBubble({required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class ChatBubble extends StatelessWidget {
           ),
         ),
         child: Text(
-          "Hi, I'm  a New User What about you?",
+          message.message,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
