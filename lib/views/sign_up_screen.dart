@@ -6,6 +6,8 @@ import 'package:final_chat_app/views/widgets/helper_snackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../models/user_model.dart';
+
 class SignUp extends StatelessWidget {
   static const String routeName = 'Sign Up Screen';
 
@@ -115,33 +117,39 @@ class SignUp extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      FirebaseFunction.signUpFunction(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        emailCreated: () {
-                          helperSnackBar(
-                              context: context,
-                              message: 'Email Created Successfully');
-                          Navigator.pushReplacementNamed(
-                              context, ChatScreen.routeName);
-                        },
-                        emailExist: () {
-                          helperSnackBar(
-                              context: context,
-                              message:
-                                  'An Account with Email ${emailController.text} Already Exists.');
-                        },
-                        weakPassword: () {
-                          helperSnackBar(
-                              context: context,
-                              message: 'The Password Provided is Too Weak');
-                        },
-                        onError: () {
-                          helperSnackBar(
-                              context: context,
-                              message: 'Something Went Wrong');
-                        },
-                      );
+                      UserModel userModel = UserModel(
+                          firstName: fNameController.text,
+                          lastName: lNameController.text,
+                          emailAddress: emailController.text);
+
+                      FirebaseFunction.addUserToFireStore(userModel);
+                      // FirebaseFunction.signUpFunction(
+                      //   email: emailController.text,
+                      //   password: passwordController.text,
+                      //   emailCreated: () {
+                      //     helperSnackBar(
+                      //         context: context,
+                      //         message: 'Email Created Successfully');
+                      //     Navigator.pushReplacementNamed(
+                      //         context, ChatScreen.routeName);
+                      //   },
+                      //   emailExist: () {
+                      //     helperSnackBar(
+                      //         context: context,
+                      //         message:
+                      //             'An Account with Email ${emailController.text} Already Exists.');
+                      //   },
+                      //   weakPassword: () {
+                      //     helperSnackBar(
+                      //         context: context,
+                      //         message: 'The Password Provided is Too Weak');
+                      //   },
+                      //   onError: () {
+                      //     helperSnackBar(
+                      //         context: context,
+                      //         message: 'Something Went Wrong');
+                      //   },
+                      // );
                     }
                   },
                   child: Text(
