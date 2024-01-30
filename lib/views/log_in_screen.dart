@@ -61,30 +61,25 @@ class LogIn extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      FirebaseFunction.SignInFunction(
-                          email: emailController.text,
-                          password: passwordController.text,
-                          userNotFound: () {
-                            helperSnackBar(
-                                context: context,
-                                message: 'No Matching Email Address Found');
-                          },
-                          wrongPassword: () {
-                            helperSnackBar(
-                                context: context,
-                                message:
-                                    'Your User Name or Password is Incorrect');
-                          },
-                          onError: () {
-                            helperSnackBar(
-                                context: context,
-                                message: 'Something Went Wrong');
-                          }
-                          // context: context,
-
-                          );
-                      // Navigator.pushReplacementNamed(
-                      //     context, ChatScreen.routeName);
+                      FirebaseFunction.signInFunction(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        loginSuccess: () {
+                          helperSnackBar(
+                              context: context, message: 'Login Successfully');
+                          Navigator.pushReplacementNamed(
+                              context, ChatScreen.routeName);
+                        },
+                        loginException: () {
+                          helperSnackBar(
+                              context: context,
+                              message:
+                                  'Your User Name or Password is Incorrect');
+                        },
+                        onError: (value) {
+                          helperSnackBar(context: context, message: value);
+                        },
+                      );
                     }
                   },
                   child: Text(

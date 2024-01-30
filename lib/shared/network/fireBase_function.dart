@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class FirebaseFunction {
   static void signUpFunction({
@@ -26,23 +25,21 @@ class FirebaseFunction {
     }
   }
 
-  static void SignInFunction(
+  static void signInFunction(
       {required String email,
       required String password,
-      required Function userNotFound,
-      required Function wrongPassword,
+      required Function loginSuccess,
+      required Function loginException,
       required Function onError}) async {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+
+      loginSuccess();
     } on FirebaseAuthException catch (ex) {
-      if (ex.code == 'user-not-found') {
-        userNotFound();
-      } else if (ex.code == 'wrong-password') {
-        wrongPassword();
-      }
+      loginException();
     } catch (error) {
-      onError();
+      onError(error.toString());
     }
   }
 }
