@@ -1,4 +1,6 @@
 class UserModel {
+  static const String COLLECTION_NAME = 'Users';
+
   String id;
   String firstName;
   String lastName;

@@ -1,6 +1,5 @@
 import 'package:final_chat_app/models/message_model.dart';
-import 'package:final_chat_app/shared/network/fireBase_function.dart';
-import 'package:final_chat_app/shared/styles/app_color.dart';
+import 'package:final_chat_app/shared/network/fireBase_manager/message_function.dart';
 import 'package:final_chat_app/views/widgets/chat_bubble.dart';
 import 'package:final_chat_app/views/widgets/chat_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class ChatScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFunction.getMessageFromFireStore(),
+        stream: MessageFunction.getMessagesFromFireStore(),
         builder: (context, snapshot) {
           List<MessageModel> messages =
               snapshot.data?.docs.map((e) => e.data()).toList() ?? [];
@@ -62,8 +61,7 @@ class ChatScreen extends StatelessWidget {
                       DateTime.now(),
                     ).toString().substring(0, 10),
                   );
-
-                  FirebaseFunction.sendMessageToFireStore(messageModel);
+                  MessageFunction.addMessagesToFireStore(messageModel);
                 },
               ),
             ],

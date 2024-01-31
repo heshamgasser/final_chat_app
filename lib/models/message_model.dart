@@ -1,4 +1,6 @@
 class MessageModel {
+  static const String COLLECTION_NAME = 'Messages';
+
   String id;
   String message;
   String date;
