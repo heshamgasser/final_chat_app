@@ -9,6 +9,7 @@ class ChatScreen extends StatelessWidget {
   static const String routeName = 'Chat Screen';
 
   TextEditingController messageController = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,8 @@ class ChatScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: ListView.separated(
+                    reverse: true,
+                    controller: scrollController,
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     itemBuilder: (context, index) {
@@ -54,14 +57,27 @@ class ChatScreen extends StatelessWidget {
               ),
               ChatTextFormField(
                 controller: messageController,
+                onSubmitted: (value) {
+                  MessageModel messageModel = MessageModel(
+                    message: value,
+                    createdAt: DateTime.now(),
+                  );
+                  MessageFunction.addMessagesToFireStore(messageModel);
+                  scrollController.animateTo(0,
+                      duration: Duration(milliseconds: 5),
+                      curve: Curves.fastOutSlowIn);
+                  messageController.clear();
+                },
                 sendMessage: () {
                   MessageModel messageModel = MessageModel(
                     message: messageController.text,
-                    date: DateUtils.dateOnly(
-                      DateTime.now(),
-                    ).toString().substring(0, 10),
+                    createdAt: DateTime.now(),
                   );
                   MessageFunction.addMessagesToFireStore(messageModel);
+                  scrollController.animateTo(0,
+                      duration: Duration(milliseconds: 5),
+                      curve: Curves.fastOutSlowIn);
+                  messageController.clear();
                 },
               ),
             ],

@@ -5,15 +5,22 @@ import '../../shared/styles/app_color.dart';
 
 class ChatTextFormField extends StatelessWidget {
   Function sendMessage;
+  Function onSubmitted;
   TextEditingController controller;
 
-  ChatTextFormField({required this.sendMessage, required this.controller});
+  ChatTextFormField(
+      {required this.sendMessage,
+      required this.controller,
+      required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       child: TextFormField(
+        onFieldSubmitted: (value) {
+          onSubmitted(value);
+        },
         controller: controller,
         style: Theme.of(context)
             .textTheme

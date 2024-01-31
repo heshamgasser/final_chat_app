@@ -24,6 +24,6 @@ class MessageFunction {
 
   static Stream<QuerySnapshot<MessageModel>> getMessagesFromFireStore() {
     var collectionRef = createMessageCollection();
-    return collectionRef.snapshots();
+    return collectionRef.orderBy('createdAt', descending: true).snapshots();
   }
 }
