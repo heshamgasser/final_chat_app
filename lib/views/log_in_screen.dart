@@ -1,4 +1,5 @@
-import 'package:final_chat_app/shared/network/fireBase_function.dart';
+import 'package:final_chat_app/shared/network/fireBase_manager/sign_in_function.dart';
+import 'package:final_chat_app/shared/network/fireBase_manager/sign_up_function.dart';
 import 'package:final_chat_app/shared/styles/app_color.dart';
 import 'package:final_chat_app/shared/styles/app_text.dart';
 import 'package:final_chat_app/views/chat_screen.dart';
@@ -61,12 +62,10 @@ class LogIn extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      FirebaseFunction.signInFunction(
-                        email: emailController.text,
+                      SignInFunction.signIn(
+                        emailAddress: emailController.text,
                         password: passwordController.text,
                         loginSuccess: () {
-                          helperSnackBar(
-                              context: context, message: 'Login Successfully');
                           Navigator.pushReplacementNamed(
                               context, ChatScreen.routeName);
                         },

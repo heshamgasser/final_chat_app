@@ -1,4 +1,4 @@
-import 'package:final_chat_app/shared/network/fireBase_function.dart';
+import 'package:final_chat_app/shared/network/fireBase_manager/sign_up_function.dart';
 import 'package:final_chat_app/views/chat_screen.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
 import 'package:final_chat_app/views/widgets/custom_text_form_field.dart';
@@ -117,39 +117,30 @@ class SignUp extends StatelessWidget {
                   ),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      UserModel userModel = UserModel(
-                          firstName: fNameController.text,
-                          lastName: lNameController.text,
-                          emailAddress: emailController.text);
-
-                      FirebaseFunction.addUserToFireStore(userModel);
-                      // FirebaseFunction.signUpFunction(
-                      //   email: emailController.text,
-                      //   password: passwordController.text,
-                      //   emailCreated: () {
-                      //     helperSnackBar(
-                      //         context: context,
-                      //         message: 'Email Created Successfully');
-                      //     Navigator.pushReplacementNamed(
-                      //         context, ChatScreen.routeName);
-                      //   },
-                      //   emailExist: () {
-                      //     helperSnackBar(
-                      //         context: context,
-                      //         message:
-                      //             'An Account with Email ${emailController.text} Already Exists.');
-                      //   },
-                      //   weakPassword: () {
-                      //     helperSnackBar(
-                      //         context: context,
-                      //         message: 'The Password Provided is Too Weak');
-                      //   },
-                      //   onError: () {
-                      //     helperSnackBar(
-                      //         context: context,
-                      //         message: 'Something Went Wrong');
-                      //   },
-                      // );
+                      SignUpFunction.signUpFunction(
+                        firstName: fNameController.text,
+                        lastName: lNameController.text,
+                        email: emailController.text,
+                        password: passwordController.text,
+                        weakPassword: () {
+                          helperSnackBar(
+                              context: context,
+                              message: 'Email Created Successfully');
+                          Navigator.pushReplacementNamed(
+                              context, ChatScreen.routeName);
+                        },
+                        usedEmail: () {
+                          helperSnackBar(
+                              context: context,
+                              message:
+                                  'An Account with Email ${emailController.text} Already Exists.');
+                        },
+                        onError: () {
+                          helperSnackBar(
+                              context: context,
+                              message: 'Something Went Wrong');
+                        },
+                      );
                     }
                   },
                   child: Text(

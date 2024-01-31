@@ -1,6 +1,5 @@
 import 'package:final_chat_app/models/message_model.dart';
-import 'package:final_chat_app/shared/network/fireBase_function.dart';
-import 'package:final_chat_app/shared/styles/app_color.dart';
+import 'package:final_chat_app/shared/network/fireBase_manager/message_function.dart';
 import 'package:final_chat_app/views/widgets/chat_bubble.dart';
 import 'package:final_chat_app/views/widgets/chat_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ class ChatScreen extends StatelessWidget {
   static const String routeName = 'Chat Screen';
 
   TextEditingController messageController = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class ChatScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder(
-        stream: FirebaseFunction.getMessageFromFireStore(),
+        stream: MessageFunction.getMessagesFromFireStore(),
         builder: (context, snapshot) {
           List<MessageModel> messages =
               snapshot.data?.docs.map((e) => e.data()).toList() ?? [];
@@ -39,6 +39,8 @@ class ChatScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: ListView.separated(
+                    reverse: true,
+                    controller: scrollController,
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     itemBuilder: (context, index) {
@@ -55,15 +57,27 @@ class ChatScreen extends StatelessWidget {
               ),
               ChatTextFormField(
                 controller: messageController,
+                onSubmitted: (value) {
+                  MessageModel messageModel = MessageModel(
+                    message: value,
+                    createdAt: DateTime.now(),
+                  );
+                  MessageFunction.addMessagesToFireStore(messageModel);
+                  scrollController.animateTo(0,
+                      duration: Duration(milliseconds: 5),
+                      curve: Curves.fastOutSlowIn);
+                  messageController.clear();
+                },
                 sendMessage: () {
                   MessageModel messageModel = MessageModel(
                     message: messageController.text,
-                    date: DateUtils.dateOnly(
-                      DateTime.now(),
-                    ).toString().substring(0, 10),
+                    createdAt: DateTime.now(),
                   );
-
-                  FirebaseFunction.sendMessageToFireStore(messageModel);
+                  MessageFunction.addMessagesToFireStore(messageModel);
+                  scrollController.animateTo(0,
+                      duration: Duration(milliseconds: 5),
+                      curve: Curves.fastOutSlowIn);
+                  messageController.clear();
                 },
               ),
             ],
