@@ -1,15 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit()
       : super(
-          LoginInitialState(),
-        );
+    LoginInitialState(),
+  );
 
-  static LoginCubit get(context) => LoginCubit();
+  static LoginCubit get(context) => BlocProvider.of(context);
 
   TextEditingController emailController = TextEditingController();
 

@@ -27,11 +27,9 @@ class LogInScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          var loginBloc = BlocProvider.of<LoginCubit>(context, listen: true);
-
           return Scaffold(
             body: Form(
-              key: loginBloc.formKey,
+              key: LoginCubit.get(context).formKey,
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
@@ -60,12 +58,13 @@ class LogInScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge),
                       SizedBox(height: 20.h),
                       CustomTextFormField(
-                          controller: loginBloc.emailController,
+                          controller: LoginCubit.get(context).emailController,
                           labelText: 'Email',
                           textInputType: TextInputType.emailAddress),
                       SizedBox(height: 20.h),
                       CustomTextFormField(
-                          controller: loginBloc.passwordController,
+                          controller:
+                              LoginCubit.get(context).passwordController,
                           labelText: 'Password',
                           textInputType: TextInputType.visiblePassword),
                       SizedBox(height: 20.h),
@@ -74,10 +73,17 @@ class LogInScreen extends StatelessWidget {
                           backgroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          if (loginBloc.formKey.currentState!.validate()) {
-                            loginBloc.signIn(
-                                email: loginBloc.emailController.text,
-                                password: loginBloc.passwordController.text);
+                          if (LoginCubit.get(context)
+                              .formKey
+                              .currentState!
+                              .validate()) {
+                            LoginCubit.get(context).signIn(
+                                email: LoginCubit.get(context)
+                                    .emailController
+                                    .text,
+                                password: LoginCubit.get(context)
+                                    .passwordController
+                                    .text);
                             // if (state is LoginLoadingState) {
                             //   const Center(child: CircularProgressIndicator());
                             // } else if (state is LoginSuccessState) {
