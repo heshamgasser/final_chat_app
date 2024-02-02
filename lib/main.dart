@@ -1,3 +1,4 @@
+import 'package:bloc/bloc.dart';
 import 'package:final_chat_app/shared/styles/app_theme.dart';
 import 'package:final_chat_app/views/chat_screen.dart';
 import 'package:final_chat_app/views/log_in_screen.dart';
@@ -5,7 +6,7 @@ import 'package:final_chat_app/views/sign_up_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'bloc_observer/bloc_observer.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -13,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Bloc.observer = MyBlocObserver();
   runApp(ChatApp());
 }
 
@@ -26,9 +28,9 @@ class ChatApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: LogIn.routeName,
+          initialRoute: LogInScreen.routeName,
           routes: {
-            LogIn.routeName: (context) => LogIn(),
+            LogInScreen.routeName: (context) => LogInScreen(),
             SignUp.routeName: (context) => SignUp(),
             ChatScreen.routeName: (context) => ChatScreen(),
           },

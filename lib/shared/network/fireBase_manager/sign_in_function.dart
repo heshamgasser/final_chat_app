@@ -11,7 +11,7 @@ class SignInFunction {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
 
-      loginSuccess();
+      loginSuccess(credential);
     } on FirebaseAuthException catch (ex) {
       loginException();
     } catch (error) {

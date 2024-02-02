@@ -1,9 +1,18 @@
+import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:final_chat_app/models/user_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:final_chat_app/views/cubits/sign_up_cubit/sign_up_state.dart';
 
-class SignUpFunction {
-  static CollectionReference<UserModel> createUsersCollection() {
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:meta/meta.dart';
+
+import '../../../models/user_model.dart';
+
+class SignUpCubit extends Cubit<SignUpStates> {
+  SignUpCubit() : super(SignUpInitialState());
+
+  static SignUpCubit get(context) => SignUpCubit();
+
+  CollectionReference<UserModel> createUsersCollection() {
     return FirebaseFirestore.instance
         .collection(UserModel.COLLECTION_NAME)
         .withConverter<UserModel>(
@@ -16,21 +25,18 @@ class SignUpFunction {
     );
   }
 
-  static Future<void> addUserToFireStore(UserModel user) {
+  Future<void> addUserToFireStore(UserModel user) {
     var collectionRef = createUsersCollection();
     var docRef = collectionRef.doc();
     return docRef.set(user);
   }
 
-  static void signUpFunction(
+  void signUpFunction(
       {required String firstName,
       required String lastName,
       required String email,
-      required String password,
-      required Function signUpSuccess,
-      required Function weakPassword,
-      required Function usedEmail,
-      required Function onError}) async {
+      required String password}) async {
+    emit(SignUpLoadingState());
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -43,17 +49,26 @@ class SignUpFunction {
 
       addUserToFireStore(userModel).then(
         (value) {
-          signUpSuccess();
+          emit(SignUpSuccessState());
         },
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        weakPassword();
+        emit(
+          SignUpFailureState(error: 'Password Provided is Too Weak'),
+        );
       } else if (e.code == 'email-already-in-use') {
-        usedEmail();
+        emit(
+          SignUpFailureState(
+              error: 'An Account with Email $email Already Exists.'),
+        );
       }
     } catch (e) {
-      onError();
+      emit(
+        SignUpFailureState(
+          error: e.toString(),
+        ),
+      );
     }
   }
 }

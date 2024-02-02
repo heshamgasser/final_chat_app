@@ -2,6 +2,8 @@ import 'package:final_chat_app/models/message_model.dart';
 import 'package:final_chat_app/shared/network/fireBase_manager/message_function.dart';
 import 'package:final_chat_app/views/widgets/chat_bubble.dart';
 import 'package:final_chat_app/views/widgets/chat_text_form_field.dart';
+import 'package:final_chat_app/views/widgets/friend_chat_bubble.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,6 +15,8 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var args = ModalRoute.of(context)?.settings.arguments as UserCredential;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -44,9 +48,13 @@ class ChatScreen extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     itemBuilder: (context, index) {
-                      return ChatBubble(
-                        message: messages[index],
-                      );
+                      return messages[index].userId == args.user!.uid
+                          ? ChatBubble(
+                              message: messages[index],
+                            )
+                          : FriendChatBubble(
+                              message: messages[index],
+                            );
                     },
                     separatorBuilder: (context, index) {
                       return SizedBox(
@@ -59,6 +67,7 @@ class ChatScreen extends StatelessWidget {
                 controller: messageController,
                 onSubmitted: (value) {
                   MessageModel messageModel = MessageModel(
+                    userId: args.user!.uid,
                     message: value,
                     createdAt: DateTime.now(),
                   );
@@ -70,6 +79,7 @@ class ChatScreen extends StatelessWidget {
                 },
                 sendMessage: () {
                   MessageModel messageModel = MessageModel(
+                    userId: args.user!.uid,
                     message: messageController.text,
                     createdAt: DateTime.now(),
                   );
