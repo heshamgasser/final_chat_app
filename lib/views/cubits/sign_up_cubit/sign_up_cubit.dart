@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:final_chat_app/views/cubits/sign_up_cubit/sign_up_state.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 import '../../../models/user_model.dart';
 
@@ -11,6 +10,18 @@ class SignUpCubit extends Cubit<SignUpStates> {
   SignUpCubit() : super(SignUpInitialState());
 
   static SignUpCubit get(context) => SignUpCubit();
+
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
+  TextEditingController fNameController = TextEditingController();
+
+  TextEditingController lNameController = TextEditingController();
+
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  GlobalKey<FormState> formKey = GlobalKey();
 
   CollectionReference<UserModel> createUsersCollection() {
     return FirebaseFirestore.instance

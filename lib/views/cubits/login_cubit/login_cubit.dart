@@ -11,11 +11,11 @@ class LoginCubit extends Cubit<LoginStates> {
 
   static LoginCubit get(context) => LoginCubit();
 
-  final TextEditingController emailController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
-  final TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
-  final GlobalKey<FormState> formKey = GlobalKey();
+  GlobalKey<FormState> formKey = GlobalKey();
 
   Future<void> signIn({required String email, required String password}) async {
     emit(LoginLoadingState());

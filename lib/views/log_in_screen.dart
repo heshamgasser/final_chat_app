@@ -11,12 +11,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class LogInScreen extends StatelessWidget {
   static const String routeName = 'Log In Screen';
 
-  TextEditingController emailController = TextEditingController();
-
-  TextEditingController passwordController = TextEditingController();
-
-  GlobalKey<FormState> formKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -33,9 +27,11 @@ class LogInScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          var loginBloc = BlocProvider.of<LoginCubit>(context, listen: true);
+
           return Scaffold(
             body: Form(
-              key: formKey,
+              key: loginBloc.formKey,
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
@@ -64,12 +60,12 @@ class LogInScreen extends StatelessWidget {
                           style: Theme.of(context).textTheme.bodyLarge),
                       SizedBox(height: 20.h),
                       CustomTextFormField(
-                          controller: emailController,
+                          controller: loginBloc.emailController,
                           labelText: 'Email',
                           textInputType: TextInputType.emailAddress),
                       SizedBox(height: 20.h),
                       CustomTextFormField(
-                          controller: passwordController,
+                          controller: loginBloc.passwordController,
                           labelText: 'Password',
                           textInputType: TextInputType.visiblePassword),
                       SizedBox(height: 20.h),
@@ -78,20 +74,20 @@ class LogInScreen extends StatelessWidget {
                           backgroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            LoginCubit.get(context).signIn(
-                                email: emailController.text,
-                                password: passwordController.text);
-                            if (state is LoginLoadingState) {
-                              const Center(child: CircularProgressIndicator());
-                            } else if (state is LoginSuccessState) {
-                              Navigator.pushReplacementNamed(
-                                  context, ChatScreen.routeName,
-                                  arguments: state.userCredential);
-                            } else if (state is LoginFailureState) {
-                              helperSnackBar(
-                                  context: context, message: state.error);
-                            }
+                          if (loginBloc.formKey.currentState!.validate()) {
+                            loginBloc.signIn(
+                                email: loginBloc.emailController.text,
+                                password: loginBloc.passwordController.text);
+                            // if (state is LoginLoadingState) {
+                            //   const Center(child: CircularProgressIndicator());
+                            // } else if (state is LoginSuccessState) {
+                            //   Navigator.pushReplacementNamed(
+                            //       context, ChatScreen.routeName,
+                            //       arguments: state.userCredential);
+                            // } else if (state is LoginFailureState) {
+                            //   helperSnackBar(
+                            //       context: context, message: state.error);
+                            // }
 
                             // SignInFunction.signIn(
                             //   emailAddress:

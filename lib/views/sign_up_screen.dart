@@ -12,18 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class SignUp extends StatelessWidget {
   static const String routeName = 'Sign Up Screen';
 
-  TextEditingController emailController = TextEditingController();
-
-  TextEditingController passwordController = TextEditingController();
-
-  TextEditingController fNameController = TextEditingController();
-
-  TextEditingController lNameController = TextEditingController();
-
-  TextEditingController confirmPasswordController = TextEditingController();
-
-  GlobalKey<FormState> formKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -41,6 +29,8 @@ class SignUp extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          var signUpBloc = BlocProvider.of<SignUpCubit>(context, listen: true);
+
           return Scaffold(
             appBar: AppBar(
               leading: BackButton(
@@ -51,7 +41,7 @@ class SignUp extends StatelessWidget {
               ),
             ),
             body: Form(
-              key: formKey,
+              key: signUpBloc.formKey,
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
@@ -106,14 +96,14 @@ class SignUp extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomTextFormField(
-                                controller: fNameController,
+                                controller: signUpBloc.fNameController,
                                 labelText: 'First Name',
                                 textInputType: TextInputType.text),
                           ),
                           SizedBox(width: 10.w),
                           Expanded(
                             child: CustomTextFormField(
-                                controller: lNameController,
+                                controller: signUpBloc.lNameController,
                                 labelText: 'Last Name',
                                 textInputType: TextInputType.text),
                           ),
@@ -121,17 +111,17 @@ class SignUp extends StatelessWidget {
                       ),
                       SizedBox(height: 10.h),
                       CustomTextFormField(
-                          controller: emailController,
+                          controller: signUpBloc.emailController,
                           labelText: 'Email',
                           textInputType: TextInputType.emailAddress),
                       SizedBox(height: 10.h),
                       CustomTextFormField(
-                          controller: passwordController,
+                          controller: signUpBloc.passwordController,
                           labelText: 'Password',
                           textInputType: TextInputType.visiblePassword),
                       SizedBox(height: 10.h),
                       CustomTextFormField(
-                          controller: confirmPasswordController,
+                          controller: signUpBloc.confirmPasswordController,
                           labelText: 'Confirm Password',
                           textInputType: TextInputType.visiblePassword),
                       SizedBox(height: 10.h),
@@ -140,12 +130,12 @@ class SignUp extends StatelessWidget {
                           backgroundColor: Colors.white,
                         ),
                         onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            SignUpCubit.get(context).signUpFunction(
-                              firstName: fNameController.text,
-                              lastName: lNameController.text,
-                              email: emailController.text,
-                              password: passwordController.text,
+                          if (signUpBloc.formKey.currentState!.validate()) {
+                            signUpBloc.signUpFunction(
+                              firstName: signUpBloc.fNameController.text,
+                              lastName: signUpBloc.lNameController.text,
+                              email: signUpBloc.emailController.text,
+                              password: signUpBloc.passwordController.text,
                             );
 
                             // SignUpFunction.signUpFunction(
